@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "bank.h"
+#include "transaction.h"
 
 void testBankGetName() {
     Bank69 b69 = Bank69();
@@ -9,6 +10,10 @@ void testBankGetName() {
 
     cout << b69.getName() << endl;
     cout << b420.getName() << endl;
+}
+
+void testTransactionType() {
+    
 }
 
 int main() {
