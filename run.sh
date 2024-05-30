@@ -1,1 +1,1 @@
-g++ *.cpp -std=c++11 -o main.out && ./main.out
+g++ main.cpp account.cpp bank.cpp transaction.cpp md5.cpp -std=c++11 -o main.out && ./main.out
