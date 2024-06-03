@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+#include "account.h"
 #include "bank.h"
 #include "transaction.h"
 
@@ -13,10 +14,19 @@ void testBankGetName() {
 }
 
 void testTransactionType() {
+    //Account a = Account::create("user001", "123");
     
+    Account a("user001", "123");
+    //cout << a.getName() << endl;
+
+    WithdrawTransaction t1(a, 100);
+    DepositTransaction t2(a, 500);
+
+    t1.execute();
+    t2.execute();
 }
 
 int main() {
-    testBankGetName();
+    testTransactionType();
     return 0;
 }

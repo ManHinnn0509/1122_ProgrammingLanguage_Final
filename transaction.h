@@ -13,45 +13,47 @@ enum TransactionType {
     TRANSFER = 3
 };
 
-class Transaction {
+class BasicTransaction {
     public:
-        Transaction(Account source, Account dest, double amount);
-        Transaction(Account user, double amount);
-
-        TransactionType getType();
-        std::optional<Account> getSource();
-        std::optional<Account> getDest();
+        BasicTransaction(Account user, double amount);
+        Account getUser() ;
         double getAmount();
-    
+        TransactionType getTransactionType();
+
+        bool execute() const {}
+
     protected:
-        TransactionType type = TransactionType::DEFAULT;
-        std::optional<Account> source;
-        std::optional<Account> dest;
+        TransactionType transactionType = TransactionType::DEFAULT;
+        Account user;
         double amount;
+
 };
 
-class TransferTransation : public Transaction {
+class DepositTransaction : public BasicTransaction {
     public:
-        TransferTransation(Account source, Account dest, double amount) : Transaction(source, dest, amount) {
-            Transaction(source, dest, amount);
-            this->type = TransactionType::TRANSFER;
-        }
+        DepositTransaction(Account user, double amount);
+        bool execute() const;
 };
 
-class WithdrawTransaction : public Transaction {
+class WithdrawTransaction : public BasicTransaction {
     public:
-        WithdrawTransaction(Account source, double amount) : Transaction(source, amount) {
-            Transaction(source, amount);
-            this->type = TransactionType::WITHDRAW;
-        }
+        WithdrawTransaction(Account user, double amount);
+        bool execute() const;
 };
 
-class DepositTransaction : public Transaction {
+/* ---------------------------------------------------------------------------------------------------- */
+
+class TransferTransaction : public BasicTransaction {
     public:
-        DepositTransaction(Account source, double amount) : Transaction(source, amount) {
-            Transaction(source, amount);
-            this->type = TransactionType::DEPOSIT;
-        }
+        TransferTransaction(Account src, Account dest, double amount);
+        Account getSrc();
+        Account getDest();
+        bool execute() const;
+
+    private:
+        TransactionType transactionType = TransactionType::DEFAULT;
+        Account dest;
+        double amount;
 };
 
 #endif
