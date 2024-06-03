@@ -7,6 +7,7 @@
 
 class Account {
     public:
+        // Need a fromUUID(string uuid) constructor
         Account(std::string name, std::string passwd);
         Account(std::string name, std::string passwd, nlohmann::json data);
 
