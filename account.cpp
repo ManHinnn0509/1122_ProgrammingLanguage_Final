@@ -58,11 +58,13 @@ bool Account::save() {
 }
 
 Account Account::create(string name, string passwd) {
+
+    vector<string> v;
     
     json data = {
         {"name", name},
         {"balance", 0.0},
-        {"transaction_history", {}}
+        {"transaction_history", v}
     };
 
     Account a(name, passwd, data);

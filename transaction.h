@@ -13,26 +13,29 @@ class BasicTransaction {
         Account getUser() ;
         double getAmount();
         std::string getTransactionType();
+        std::string getDateTime();
+        std::string toString();
 
-        bool execute() const {}
+        virtual bool execute() const = 0;
 
     protected:
         std::string transactionType = "Default";
         Account user;
         double amount;
+        std::string dateTime;
 
 };
 
 class DepositTransaction : public BasicTransaction {
     public:
         DepositTransaction(Account user, double amount);
-        bool execute() const;
+        bool execute() const override;
 };
 
 class WithdrawTransaction : public BasicTransaction {
     public:
         WithdrawTransaction(Account user, double amount);
-        bool execute() const;
+        bool execute() const override;
 };
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -40,9 +43,13 @@ class WithdrawTransaction : public BasicTransaction {
 class TransferTransaction : public BasicTransaction {
     public:
         TransferTransaction(Account src, Account dest, double amount);
+
         Account getSrc();
         Account getDest();
-        bool execute() const;
+
+        bool execute() const override;
+
+        std::string toString();
 
     private:
         Account dest;

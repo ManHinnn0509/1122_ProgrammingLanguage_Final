@@ -1,3 +1,6 @@
+#ifndef UTILS_INPUT_H
+#define UTILS_INPUT_H
+
 #include <iostream>
 #include <limits>
 
@@ -71,3 +74,5 @@ double scanDouble(const std::string& prompt) {
         return value;
     }
 }
+
+#endif

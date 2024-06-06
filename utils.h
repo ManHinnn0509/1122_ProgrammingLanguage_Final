@@ -30,13 +30,4 @@ bool writeJSON_File(std::string path, nlohmann::json data) {
     }
 }
 
-std::string getCurrentDateTime() {
-    time_t now = time(0);
-    struct tm tstruct;
-    char buffer[80];
-    tstruct = *localtime(&now);
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %X", &tstruct);
-    return buffer;
-}
-
 #endif

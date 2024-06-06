@@ -1,14 +1,18 @@
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 #include "transaction.h"
 #include "account.h"
+
+#include "utils_time.h"
 
 // 1 user only
 
 BasicTransaction::BasicTransaction(Account user, double amount) : user(user), amount(amount) {
     this->user = user;
     this->amount = amount;
+    this->dateTime = getCurrentDateTime();
 }
 
 Account BasicTransaction::getUser() {
@@ -21,6 +25,14 @@ double BasicTransaction::getAmount() {
 
 string BasicTransaction::getTransactionType() {
     return this->transactionType;
+}
+
+string BasicTransaction::getDateTime() {
+    return this->dateTime;
+}
+
+string BasicTransaction::toString() {
+    return "[" + getDateTime() + "] " + this->getTransactionType() + ", " + to_string(this->getAmount());
 }
 
 // Deposit & withdraw
@@ -41,6 +53,8 @@ bool WithdrawTransaction::execute() const {
     cout << "Withdraw - execute, amount: " << this->amount << endl;
 }
 
+
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 // 2 users, transfer
@@ -59,5 +73,13 @@ Account TransferTransaction::getDest() {
 }
 
 bool TransferTransaction::execute() const {
-    
+    TransferTransaction* dis = const_cast<TransferTransaction*>(this);
+    cout << "From: " << dis->getSrc().getName() << ", To: " << dis->getDest().getName() << ", Amount: " << dis->getAmount() << endl;
+}
+
+string TransferTransaction::toString() {
+    return "[" + getDateTime() + "] "
+             + "From: " + this->getSrc().getName()
+             + ", To: " + this->getDest().getName()
+             + ", Amount: " + to_string(this->getAmount());
 }
