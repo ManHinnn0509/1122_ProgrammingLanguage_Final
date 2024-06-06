@@ -19,14 +19,14 @@ double BasicTransaction::getAmount() {
     return this->amount;
 }
 
-TransactionType BasicTransaction::getTransactionType() {
+string BasicTransaction::getTransactionType() {
     return this->transactionType;
 }
 
 // Deposit & withdraw
 
 DepositTransaction::DepositTransaction(Account user, double amount) : BasicTransaction(user, amount) {
-    this->transactionType = TransactionType::DEPOSIT;
+    this->transactionType = "Deposit";
 }
 
 bool DepositTransaction::execute() const {
@@ -34,7 +34,7 @@ bool DepositTransaction::execute() const {
 }
 
 WithdrawTransaction::WithdrawTransaction(Account user, double amount) : BasicTransaction(user, amount) {
-    this->transactionType = TransactionType::WITHDRAW;
+    this->transactionType = "Withdraw";
 }
 
 bool WithdrawTransaction::execute() const {
@@ -47,7 +47,7 @@ bool WithdrawTransaction::execute() const {
 
 TransferTransaction::TransferTransaction(Account src, Account dest, double amount) : BasicTransaction(src, amount), dest(dest) {
     this->dest = dest;
-    this->transactionType = TransactionType::TRANSFER;
+    this->transactionType = "Transfer";
 }
 
 Account TransferTransaction::getSrc() {

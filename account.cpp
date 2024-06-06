@@ -19,6 +19,11 @@ Account::Account(string name, string passwd, json data) {
     this->data = data;
 }
 
+Account::Account(string uuid) {
+    this->hash = uuid;
+    this->data = this->read();
+}
+
 bool Account::success() {
     return this->data != NULL;
 }

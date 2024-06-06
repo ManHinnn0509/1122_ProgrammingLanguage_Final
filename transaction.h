@@ -6,24 +6,18 @@
 
 #include "account.h"
 
-enum TransactionType {
-    DEFAULT = 0,
-    WITHDRAW = 1,
-    DEPOSIT = 2,
-    TRANSFER = 3
-};
 
 class BasicTransaction {
     public:
         BasicTransaction(Account user, double amount);
         Account getUser() ;
         double getAmount();
-        TransactionType getTransactionType();
+        std::string getTransactionType();
 
         bool execute() const {}
 
     protected:
-        TransactionType transactionType = TransactionType::DEFAULT;
+        std::string transactionType = "Default";
         Account user;
         double amount;
 
@@ -51,9 +45,7 @@ class TransferTransaction : public BasicTransaction {
         bool execute() const;
 
     private:
-        TransactionType transactionType = TransactionType::DEFAULT;
         Account dest;
-        double amount;
 };
 
 #endif

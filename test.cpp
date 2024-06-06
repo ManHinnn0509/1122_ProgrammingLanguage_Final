@@ -22,8 +22,10 @@ void testTransactionType() {
     WithdrawTransaction t1(a, 100);
     DepositTransaction t2(a, 500);
 
-    t1.execute();
-    t2.execute();
+    //t1.execute();
+    //t2.execute();
+    cout << t1.getTransactionType() << endl;
+    cout << t2.getTransactionType() << endl;
 }
 
 int main() {
