@@ -106,13 +106,18 @@ void accountOperations(string uuid) {
 
         // Only if the amount is valid
         else if (option == "3") {
+            if (a.getBalance() < amount) {
+                cout << "Invalid amount (Balance < amount)" << endl;
+                continue;
+            }
+
             WithdrawTransaction t(a, amount);
             bool result = t.execute();
             if (result) {
                 cout << "Withdrew $" << amount << endl;
             }
             else {
-                cout << "Invalid amount (amount > balance)" << endl;
+                cout << "Something went wrong, please try again later" << endl;
             }
         }
         else if (option == "4") {
@@ -126,6 +131,12 @@ void accountOperations(string uuid) {
             }
         }
         else if (option == "5") {
+            
+            if (a.getBalance() < amount) {
+                cout << "Invalid amount (Balance < amount)" << endl;
+                continue;
+            }
+
             string receiverID;
             cout << "Receiver's ID: ";
             cin >> receiverID;

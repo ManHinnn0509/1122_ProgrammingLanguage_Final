@@ -62,9 +62,11 @@ bool WithdrawTransaction::execute() const {
     WithdrawTransaction* dis = const_cast<WithdrawTransaction*>(this);
 
     Account user = dis->getUser();
+    /*
     if (user.getBalance() < dis->getAmount()) {
         return false;
     }
+    */
     user.setBalance(user.getBalance() - dis->getAmount());
     user.addTransactionHistory(dis->toString());
     return user.save();
@@ -93,11 +95,14 @@ bool TransferTransaction::execute() const {
 
     Account src = dis->getSrc();
     Account dest = dis->getDest();
-    int amount = dis->getAmount();
+    double amount = dis->getAmount();
 
+    // Checked before executing
+    /*
     if (src.getBalance() < amount) {
         return false;
     }
+    */
 
     src.setBalance(src.getBalance() - amount);
     src.addTransactionHistory(dis->toString());

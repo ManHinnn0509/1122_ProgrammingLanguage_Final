@@ -53,7 +53,7 @@ vector<string> Account::getTransactionHistory() {
     return this->data["transaction_history"];
 }
 
-void Account::setBalance(int newBalance) {
+void Account::setBalance(double newBalance) {
     this->data["balance"] = newBalance;
 }
 

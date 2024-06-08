@@ -17,7 +17,7 @@ class Account {
         double getBalance();
         vector<string> getTransactionHistory();
 
-        void setBalance(int newBalance);
+        void setBalance(double newBalance);
         void setTransactionHistory(vector<string> history);
         void addTransactionHistory(string hist);
 
