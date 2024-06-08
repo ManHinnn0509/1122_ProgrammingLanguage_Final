@@ -28,4 +28,6 @@ Description and notes for myself:
 
 ## Compile and run
 
+This project uses C++11
+
 Ignore the `test.*` since those files are for testing only, the main files are `run.cmd` and `run.sh`. Run these scripts to compile the program and run it automatically.
