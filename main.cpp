@@ -6,19 +6,23 @@ using namespace std;
 
 #include "utils_input.h"
 
+void accountOperations(string uuid);
+bool askRegister();
+Account askLogin();
+
 int main() {
 
-    cout << "D0809371 - Bank System" << endl;
-    cout << "" << endl;
-    cout << "    1) Register" << endl;
-    cout << "    2) Login" << endl;
-    cout << "    3) Exit Program" << endl;
-    cout << "" << endl;
-
-    string option;
     while (true) {
 
+        cout << "D0809371 - Bank System" << endl;
+        cout << "" << endl;
+        cout << "    1) Register" << endl;
+        cout << "    2) Login" << endl;
+        cout << "    3) Exit Program" << endl;
+        cout << "" << endl;
+
         cout << "Option: ";
+        string option;
         cin >> option;
 
         // Register
@@ -29,6 +33,7 @@ int main() {
             }
             else {
                 cout << "Failed! Something went wrong when attempting to register." << endl;
+                cout << "Maybe the account already exists" << endl;
             }
         }
 
@@ -39,7 +44,7 @@ int main() {
                 cout << "Account not found / wrong credentials." << endl;
                 continue;
             }
-            accountOperations(a);
+            accountOperations(a.getHash());
         }
 
         // Exit
@@ -57,19 +62,41 @@ int main() {
     return 0;
 }
 
-void accountOperations(Account a) {
-    cout << "Transactions" << endl;
-    cout << endl;
-    cout << "    1) Withdraw" << endl;
-    cout << "    2) Deposit" << endl;
-    cout << "    3) Transfer" << endl;
-    cout << "    4) Logout" << endl;
-    cout << endl;
-
-    string option;
+void accountOperations(string uuid) {
     while (true) {
+        cout << "Transactions" << endl;
+        cout << endl;
+        cout << "    1) Show balance" << endl;
+        cout << "    2) Show transaction history" << endl;
+        cout << "    3) Withdraw" << endl;
+        cout << "    4) Deposit" << endl;
+        cout << "    5) Transfer" << endl;
+        cout << "    6) Logout" << endl;
+        cout << endl;
+
         cout << "Transaction option: ";
+        string option;
         cin >> option;
+
+        // Logout, early return
+        if (option == "6") {
+            return;
+        }
+
+        Account a(uuid);
+
+        // Show balance, continue
+        if (option == "1") {
+            cout << "Balance: $" << a.getBalance() << endl;
+            continue;
+        }
+        if (option == "2") {
+            vector<string> hist = a.getTransactionHistory();
+            for (string h : hist) {
+                cout << h << endl;
+            }
+            continue;
+        }
         
         double amount = scanDouble("Amount: ");
         if (amount <= 0) {
@@ -77,21 +104,50 @@ void accountOperations(Account a) {
             continue;
         }
 
-        if (option == "1") {
-            WithdrawTransaction t(a, amount);
-            t.execute();
-        }
-        else if (option == "2") {
-            DepositTransaction t(a, amount);
-            t.execute();
-        }
+        // Only if the amount is valid
         else if (option == "3") {
+            WithdrawTransaction t(a, amount);
+            bool result = t.execute();
+            if (result) {
+                cout << "Withdrew $" << amount << endl;
+            }
+            else {
+                cout << "Invalid amount (amount > balance)" << endl;
+            }
+        }
+        else if (option == "4") {
+            DepositTransaction t(a, amount);
+            bool result = t.execute();
+            if (result) {
+                cout << "Deposited $" << amount << endl;
+            }
+            else {
+                cout << "Unable to deposit" << endl;
+            }
+        }
+        else if (option == "5") {
             string receiverID;
             cout << "Receiver's ID: ";
             cin >> receiverID;
-        }
-        else if (option == "4") {
 
+            Account dest(receiverID);
+            if (!dest.success()) {
+                cout << "Invalid ID" << endl;
+                continue;
+            }
+
+            TransferTransaction t(a, dest, amount);
+            bool result = t.execute();
+            if (result) {
+
+            }
+            else {
+
+            }
+
+        }
+        else {
+            cout << "Invalid option" << endl;
         }
     }
 }

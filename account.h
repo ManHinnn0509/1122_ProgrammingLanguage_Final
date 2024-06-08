@@ -15,9 +15,15 @@ class Account {
         std::string getHash();
         std::string getName();
         double getBalance();
+        vector<string> getTransactionHistory();
+
+        void setBalance(int newBalance);
+        void setTransactionHistory(vector<string> history);
+        void addTransactionHistory(string hist);
 
         nlohmann::json getData();
 
+        //bool alreadyExists();
         bool success();
 
         nlohmann::json read();

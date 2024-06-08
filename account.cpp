@@ -1,3 +1,4 @@
+#include <sys/stat.h>
 #include <iostream>
 using namespace std;
 
@@ -24,6 +25,14 @@ Account::Account(string uuid) {
     this->data = this->read();
 }
 
+/*
+bool Account::alreadyExists() {
+    string filePath = "./data/account/" + this->getHash() + ".json";
+    struct stat buffer;
+    return (stat (filePath.c_str(), &buffer) == 0);
+}
+*/
+
 bool Account::success() {
     return this->data != NULL;
 }
@@ -40,6 +49,24 @@ double Account::getBalance() {
     return this->data["balance"];
 }
 
+vector<string> Account::getTransactionHistory() {
+    return this->data["transaction_history"];
+}
+
+void Account::setBalance(int newBalance) {
+    this->data["balance"] = newBalance;
+}
+
+void Account::setTransactionHistory(vector<string> history) {
+    this->data["transaction_history"] = history;
+}
+
+void Account::addTransactionHistory(string hist) {
+    vector<string> h = this->getTransactionHistory();
+    h.push_back(hist);
+    this->setTransactionHistory(h);
+}
+
 json Account::getData() {
     return this->data;
 }
@@ -54,7 +81,8 @@ json Account::read() {
 
 bool Account::save() {
     json data = this->data;
-    return writeJSON_File(this->getJSON_FilePath(), data);
+    bool b = writeJSON_File(this->getJSON_FilePath(), data);
+    return b;
 }
 
 Account Account::create(string name, string passwd) {

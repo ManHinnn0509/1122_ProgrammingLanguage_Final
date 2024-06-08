@@ -42,7 +42,14 @@ DepositTransaction::DepositTransaction(Account user, double amount) : BasicTrans
 }
 
 bool DepositTransaction::execute() const {
-    cout << "Deposit - execute, amount: " << this->amount << endl;
+    //cout << "Deposit - execute, amount: " << this->amount << endl;
+
+    DepositTransaction* dis = const_cast<DepositTransaction*>(this);
+
+    Account user = dis->getUser();
+    user.setBalance(user.getBalance() + dis->getAmount());
+    user.addTransactionHistory(dis->toString());
+    return user.save();
 }
 
 WithdrawTransaction::WithdrawTransaction(Account user, double amount) : BasicTransaction(user, amount) {
@@ -50,10 +57,18 @@ WithdrawTransaction::WithdrawTransaction(Account user, double amount) : BasicTra
 }
 
 bool WithdrawTransaction::execute() const {
-    cout << "Withdraw - execute, amount: " << this->amount << endl;
+    //cout << "Withdraw - execute, amount: " << this->amount << endl;
+
+    WithdrawTransaction* dis = const_cast<WithdrawTransaction*>(this);
+
+    Account user = dis->getUser();
+    if (user.getBalance() < dis->getAmount()) {
+        return false;
+    }
+    user.setBalance(user.getBalance() - dis->getAmount());
+    user.addTransactionHistory(dis->toString());
+    return user.save();
 }
-
-
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -74,7 +89,25 @@ Account TransferTransaction::getDest() {
 
 bool TransferTransaction::execute() const {
     TransferTransaction* dis = const_cast<TransferTransaction*>(this);
-    cout << "From: " << dis->getSrc().getName() << ", To: " << dis->getDest().getName() << ", Amount: " << dis->getAmount() << endl;
+    //cout << "From: " << dis->getSrc().getName() << ", To: " << dis->getDest().getName() << ", Amount: " << dis->getAmount() << endl;
+
+    Account src = dis->getSrc();
+    Account dest = dis->getDest();
+    int amount = dis->getAmount();
+
+    if (src.getBalance() < amount) {
+        return false;
+    }
+
+    src.setBalance(src.getBalance() - amount);
+    src.addTransactionHistory(dis->toString());
+    bool b1 = src.save();
+
+    dest.setBalance(dest.getBalance() + amount);
+    dest.addTransactionHistory(dis->toString());
+    bool b2 = dest.save();
+
+    return (b1 && b2);
 }
 
 string TransferTransaction::toString() {
